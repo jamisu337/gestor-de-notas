@@ -8,7 +8,8 @@ import {
   GraduationCap, 
   LayoutDashboard,
   Settings,
-  Link as LinkIcon
+  Link as LinkIcon,
+  FileText
 } from 'lucide-react';
 import './styles.css';
 
@@ -26,6 +27,7 @@ export default function Sidebar() {
     { to: '/admin/classes', icon: <Users size={20} />, label: 'Turmas' },
     { to: '/admin/users', icon: <GraduationCap size={20} />, label: 'Usuários' },
     { to: '/admin/subjects', icon: <BookOpen size={20} />, label: 'Disciplinas' },
+    { to: '/admin/grades', icon: <FileText size={20} />, label: 'Análise de Notas' },
   ];
 
   const teacherLinks = [

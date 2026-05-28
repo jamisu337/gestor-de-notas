@@ -1,6 +1,6 @@
 // Simulando um banco de dados local
 
-const VERSION = '_v3'; // Alterar para forçar reset do localStorage com novos dados padrão
+const VERSION = '_v4'; // Alterar para forçar reset do localStorage com novos dados padrão
 
 const loadData = (key, defaultData) => {
   const data = localStorage.getItem(`gestor_notas_${key}${VERSION}`);
@@ -76,6 +76,7 @@ const defaultSubjects = [
 const defaultClassSubjectTeacher = [];
 const defaultClassStudents = [];
 const defaultGrades = [];
+const defaultGradeFormulas = []; // Nova tabela para Fórmulas de Notas
 
 // Distribuindo alunos nas turmas (3 alunos por turma para dar 27)
 let studentIndex = 0;
@@ -110,6 +111,7 @@ export const db = {
   classSubjectTeacher: loadData('classSubjectTeacher', defaultClassSubjectTeacher),
   classStudents: loadData('classStudents', defaultClassStudents),
   grades: loadData('grades', defaultGrades),
+  gradeFormulas: loadData('gradeFormulas', defaultGradeFormulas),
   
   save(table) {
     saveData(table, this[table]);
@@ -127,25 +129,44 @@ export const api = {
     });
   },
   
-  updateGrade: async (student_id, class_subject_id, nota_1, nota_2) => {
+  updateGrade: async (student_id, class_subject_id, bimestre, field, value) => {
     return new Promise((resolve) => {
       setTimeout(() => {
-        let grade = db.grades.find(g => g.student_id === student_id && g.class_subject_id === class_subject_id);
+        let grade = db.grades.find(g => g.student_id === student_id && g.class_subject_id === class_subject_id && g.bimestre === bimestre);
         if (grade) {
-          grade.nota_1 = nota_1 !== undefined ? nota_1 : grade.nota_1;
-          grade.nota_2 = nota_2 !== undefined ? nota_2 : grade.nota_2;
+          grade.values[field] = value;
         } else {
           grade = {
             id: 'g' + Date.now(),
             student_id,
             class_subject_id,
-            nota_1: nota_1 || null,
-            nota_2: nota_2 || null
+            bimestre,
+            values: { [field]: value }
           };
           db.grades.push(grade);
         }
         db.save('grades');
         resolve(grade);
+      }, 300);
+    });
+  },
+
+  updateFormula: async (class_subject_id, fields) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        let formula = db.gradeFormulas.find(f => f.class_subject_id === class_subject_id);
+        if (formula) {
+          formula.fields = fields;
+        } else {
+          formula = {
+            id: 'f' + Date.now(),
+            class_subject_id,
+            fields
+          };
+          db.gradeFormulas.push(formula);
+        }
+        db.save('gradeFormulas');
+        resolve(formula);
       }, 300);
     });
   }
