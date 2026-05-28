@@ -1,14 +1,14 @@
 import React from 'react';
 import './styles.css';
 
-export default function DataGrid({ columns, data, keyField = 'id', renderActions }) {
+export default function DataGrid({ columns, data, keyField = 'id', renderActions, minWidth }) {
   if (!data || data.length === 0) {
     return <div className="datagrid-empty">Nenhum registro encontrado.</div>;
   }
 
   return (
     <div className="datagrid-container">
-      <table className="datagrid-table">
+      <table className="datagrid-table" style={minWidth ? { minWidth } : {}}>
         <thead>
           <tr>
             {columns.map((col, idx) => (
@@ -16,7 +16,7 @@ export default function DataGrid({ columns, data, keyField = 'id', renderActions
                 {col.header}
               </th>
             ))}
-            {renderActions && <th style={{ width: '100px', textAlign: 'center' }}>Ações</th>}
+            {renderActions && <th style={{ width: '140px', textAlign: 'center' }}>Ações</th>}
           </tr>
         </thead>
         <tbody>
@@ -29,7 +29,9 @@ export default function DataGrid({ columns, data, keyField = 'id', renderActions
               ))}
               {renderActions && (
                 <td style={{ textAlign: 'center' }}>
-                  {renderActions(row)}
+                  <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', alignItems: 'center' }}>
+                    {renderActions(row)}
+                  </div>
                 </td>
               )}
             </tr>

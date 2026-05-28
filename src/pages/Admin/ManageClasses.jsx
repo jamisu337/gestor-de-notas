@@ -3,13 +3,15 @@ import Card from '../../components/Card';
 import DataGrid from '../../components/DataGrid';
 import Modal from '../../components/Modal';
 import { db } from '../../services/mockDb';
-import { Plus, Edit2, Trash2 } from 'lucide-react';
+import { Plus, Edit2, Trash2, Users } from 'lucide-react';
+import ClassAllocations from '../../components/ClassAllocations';
 
 export default function ManageClasses() {
   const [classes, setClasses] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentClass, setCurrentClass] = useState(null);
+  const [selectedClassForAllocation, setSelectedClassForAllocation] = useState(null);
 
   useEffect(() => {
     loadClasses();
@@ -53,6 +55,15 @@ export default function ManageClasses() {
 
   const filteredClasses = classes.filter(c => c.nome.toLowerCase().includes(searchTerm.toLowerCase()));
 
+  if (selectedClassForAllocation) {
+    return (
+      <ClassAllocations 
+        classId={selectedClassForAllocation} 
+        onBack={() => setSelectedClassForAllocation(null)} 
+      />
+    );
+  }
+
   return (
     <div>
       <Card 
@@ -64,22 +75,26 @@ export default function ManageClasses() {
           </button>
         }
       >
-        <div style={{ marginBottom: '16px', maxWidth: '300px' }}>
-          <input 
-            type="text" 
-            placeholder="Pesquisar por nome da turma..." 
+        <div className="flex-controls">
+          <div style={{ maxWidth: '300px' }}>
+            <input 
+              type="text" 
+              placeholder="Pesquisar por nome da turma..." 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             style={{ width: '100%', padding: '8px 12px', border: '1px solid #e2e8f0', borderRadius: '4px' }}
           />
+          </div>
         </div>
         <DataGrid 
           columns={columns} 
           data={filteredClasses} 
+          minWidth="600px"
           renderActions={(row) => (
             <>
-              <button className="action-btn edit" onClick={() => handleOpenModal(row)}><Edit2 size={16} /></button>
-              <button className="action-btn delete" onClick={() => handleDelete(row.id)}><Trash2 size={16} /></button>
+              <button className="action-btn manage" title="Gerenciar Alocações" onClick={() => setSelectedClassForAllocation(row.id)}><Users size={16} /></button>
+              <button className="action-btn edit" title="Editar Turma" onClick={() => handleOpenModal(row)}><Edit2 size={16} /></button>
+              <button className="action-btn delete" title="Excluir Turma" onClick={() => handleDelete(row.id)}><Trash2 size={16} /></button>
             </>
           )}
         />

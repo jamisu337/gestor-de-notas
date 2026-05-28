@@ -59,6 +59,14 @@
   transition: all var(--transition-fast);
 }
 
+.action-btn.manage {
+  color: var(--color-primary);
+}
+
+.action-btn.manage:hover {
+  background-color: rgba(94, 75, 138, 0.1);
+}
+
 .action-btn.edit {
   color: var(--color-primary);
 }

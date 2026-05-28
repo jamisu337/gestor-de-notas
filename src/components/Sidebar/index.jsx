@@ -26,7 +26,6 @@ export default function Sidebar() {
     { to: '/admin/classes', icon: <Users size={20} />, label: 'Turmas' },
     { to: '/admin/users', icon: <GraduationCap size={20} />, label: 'Usuários' },
     { to: '/admin/subjects', icon: <BookOpen size={20} />, label: 'Disciplinas' },
-    { to: '/admin/allocations', icon: <LinkIcon size={20} />, label: 'Alocações' },
   ];
 
   const teacherLinks = [

@@ -5,7 +5,6 @@ import AdminHome from './Home';
 import ManageClasses from './ManageClasses';
 import ManageUsers from './ManageUsers';
 import ManageSubjects from './ManageSubjects';
-import Allocations from './Allocations'; // Será criado no próximo passo
 
 export default function AdminDashboard() {
   return (
@@ -15,7 +14,6 @@ export default function AdminDashboard() {
         <Route path="/classes" element={<ManageClasses />} />
         <Route path="/users" element={<ManageUsers />} />
         <Route path="/subjects" element={<ManageSubjects />} />
-        <Route path="/allocations" element={<Allocations />} />
       </Routes>
     </Layout>
   );

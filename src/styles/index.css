@@ -82,3 +82,41 @@ input, select, textarea {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-primary);
 }
+
+/* Responsive Utilities */
+.responsive-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+@media (max-width: 768px) {
+  .responsive-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.flex-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.flex-controls > div, .flex-controls > select {
+  flex: 1;
+  min-width: 200px;
+}
+
+.flex-controls button {
+  width: auto;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .flex-controls button {
+    width: 100% !important;
+  }
+}

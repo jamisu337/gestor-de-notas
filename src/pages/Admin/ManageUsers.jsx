@@ -121,7 +121,7 @@ export default function ManageUsers() {
           </button>
         </div>
 
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
+        <div className="flex-controls">
           <div style={{ flex: 1, maxWidth: '300px' }}>
             <input 
               type="text" 
@@ -140,6 +140,7 @@ export default function ManageUsers() {
         <DataGrid 
           columns={activeTab === 'STAFF' ? staffColumns : studentColumns} 
           data={activeTab === 'STAFF' ? filteredUsers : filteredStudents} 
+          minWidth="600px"
           renderActions={(row) => (
             <>
               <button className="action-btn edit" onClick={() => handleOpenModal(row)}><Edit2 size={16} /></button>

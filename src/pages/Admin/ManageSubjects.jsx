@@ -46,7 +46,7 @@ export default function ManageSubjects() {
   };
 
   const columns = [
-    { field: 'nome', header: 'Nome da Disciplina' }
+    { field: 'nome', header: 'Disciplina' }
   ];
 
   return (
