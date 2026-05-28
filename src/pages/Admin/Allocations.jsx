@@ -24,7 +24,7 @@ export default function Allocations() {
     setClasses([...db.classes]);
     setAllStudents([...db.students]);
     setAllSubjects([...db.subjects]);
-    setAllTeachers(db.users.filter(u => u.role === 'TEACHER'));
+    setAllTeachers(db.users.filter(u => u.role === 'Professor'));
   }, []);
 
   useEffect(() => {

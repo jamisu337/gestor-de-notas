@@ -7,6 +7,7 @@ import { Plus, Edit2, Trash2 } from 'lucide-react';
 
 export default function ManageClasses() {
   const [classes, setClasses] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentClass, setCurrentClass] = useState(null);
 
@@ -50,6 +51,8 @@ export default function ManageClasses() {
     { field: 'ano', header: 'Ano Letivo' },
   ];
 
+  const filteredClasses = classes.filter(c => c.nome.toLowerCase().includes(searchTerm.toLowerCase()));
+
   return (
     <div>
       <Card 
@@ -61,9 +64,18 @@ export default function ManageClasses() {
           </button>
         }
       >
+        <div style={{ marginBottom: '16px', maxWidth: '300px' }}>
+          <input 
+            type="text" 
+            placeholder="Pesquisar por nome da turma..." 
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={{ width: '100%', padding: '8px 12px', border: '1px solid #e2e8f0', borderRadius: '4px' }}
+          />
+        </div>
         <DataGrid 
           columns={columns} 
-          data={classes} 
+          data={filteredClasses} 
           renderActions={(row) => (
             <>
               <button className="action-btn edit" onClick={() => handleOpenModal(row)}><Edit2 size={16} /></button>

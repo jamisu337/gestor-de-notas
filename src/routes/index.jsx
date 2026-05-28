@@ -15,7 +15,7 @@ export default function AppRoutes() {
         <Route 
           path="/admin/*" 
           element={
-            <PrivateRoute requiredRole="ADMIN">
+            <PrivateRoute requiredRole="Administrador">
               <AdminDashboard />
             </PrivateRoute>
           } 
@@ -25,7 +25,7 @@ export default function AppRoutes() {
         <Route 
           path="/teacher/*" 
           element={
-            <PrivateRoute requiredRole="TEACHER">
+            <PrivateRoute requiredRole="Professor">
               <TeacherDashboard />
             </PrivateRoute>
           } 

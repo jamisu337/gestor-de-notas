@@ -15,7 +15,7 @@ export const PrivateRoute = ({ children, requiredRole }) => {
 
   if (requiredRole && user.role !== requiredRole) {
     // Se o usuário não tem a role necessária, redireciona para a home correta dele
-    if (user.role === 'ADMIN') {
+    if (user.role === 'Administrador') {
       return <Navigate to="/admin" />;
     }
     return <Navigate to="/teacher" />;

@@ -4,7 +4,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import './styles.css';
 
 export default function Login() {
-  const [role, setRole] = useState('TEACHER'); // TEACHER ou ADMIN
+  const [role, setRole] = useState('Professor'); // Professor ou Administrador
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -22,7 +22,7 @@ export default function Login() {
 
     const res = await login(email, password, role);
     if (res.success) {
-      navigate(role === 'ADMIN' ? '/admin' : '/teacher');
+      navigate(role === 'Administrador' ? '/admin' : '/teacher');
     } else {
       setError(res.message);
     }
@@ -39,15 +39,15 @@ export default function Login() {
         <div className="role-selector">
           <button 
             type="button" 
-            className={`role-tab ${role === 'TEACHER' ? 'active' : ''}`}
-            onClick={() => setRole('TEACHER')}
+            className={`role-tab ${role === 'Professor' ? 'active' : ''}`}
+            onClick={() => setRole('Professor')}
           >
             Sou Professor
           </button>
           <button 
             type="button" 
-            className={`role-tab ${role === 'ADMIN' ? 'active' : ''}`}
-            onClick={() => setRole('ADMIN')}
+            className={`role-tab ${role === 'Administrador' ? 'active' : ''}`}
+            onClick={() => setRole('Administrador')}
           >
             Sou Administrador
           </button>
@@ -60,7 +60,7 @@ export default function Login() {
             <label>Email</label>
             <input 
               type="email" 
-              placeholder={role === 'ADMIN' ? 'admin@escola.com' : 'professor@escola.com'}
+              placeholder={role === 'Administrador' ? 'admin@escola.com' : 'professor@escola.com'}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />

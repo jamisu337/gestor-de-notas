@@ -33,13 +33,13 @@ export default function Sidebar() {
     { to: '/teacher', icon: <LayoutDashboard size={20} />, label: 'Minhas Turmas' },
   ];
 
-  const links = user?.role === 'ADMIN' ? adminLinks : teacherLinks;
+  const links = user?.role === 'Administrador' ? adminLinks : teacherLinks;
 
   return (
     <aside className="sidebar">
       <div className="sidebar-header">
         <h2>Gestor Escolar</h2>
-        <span className="role-badge">{user?.role === 'ADMIN' ? 'Administrador' : 'Professor'}</span>
+        <span className="role-badge">{user?.role === 'Administrador' ? 'Administrador' : 'Professor'}</span>
       </div>
 
       <nav className="sidebar-nav">

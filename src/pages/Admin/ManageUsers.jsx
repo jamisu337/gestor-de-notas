@@ -9,6 +9,7 @@ export default function ManageUsers() {
   const [users, setUsers] = useState([]);
   const [students, setStudents] = useState([]);
   const [activeTab, setActiveTab] = useState('STAFF'); // STAFF ou STUDENTS
+  const [searchTerm, setSearchTerm] = useState('');
   
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
@@ -24,9 +25,17 @@ export default function ManageUsers() {
 
   const handleOpenModal = (user = null) => {
     if (activeTab === 'STAFF') {
-      setCurrentUser(user || { nome: '', email: '', password: '123', role: 'TEACHER' });
+      setCurrentUser(user || { nome: '', email: '', password: '123', role: 'Professor' });
     } else {
-      setCurrentUser(user || { nome: '', matricula: '' });
+      let newMatricula = '';
+      if (!user) {
+        const maxMatricula = db.students.reduce((max, s) => {
+          const num = parseInt(s.matricula, 10);
+          return !isNaN(num) && num > max ? num : max;
+        }, 2026000);
+        newMatricula = (maxMatricula + 1).toString();
+      }
+      setCurrentUser(user || { nome: '', matricula: newMatricula, email: '', telefone: '' });
     }
     setIsModalOpen(true);
   };
@@ -43,6 +52,12 @@ export default function ManageUsers() {
       }
       db.save('users');
     } else {
+      const isDuplicate = db.students.some(s => s.matricula === currentUser.matricula && s.id !== currentUser.id);
+      if (isDuplicate) {
+        alert('Já existe um aluno com essa matrícula. Por favor, insira uma matrícula única.');
+        return;
+      }
+
       if (currentUser.id) {
         const idx = db.students.findIndex(s => s.id === currentUser.id);
         db.students[idx] = currentUser;
@@ -78,7 +93,12 @@ export default function ManageUsers() {
   const studentColumns = [
     { field: 'nome', header: 'Nome' },
     { field: 'matricula', header: 'Matrícula' },
+    { field: 'email', header: 'Email' },
+    { field: 'telefone', header: 'Telefone' },
   ];
+
+  const filteredUsers = users.filter(u => u.nome.toLowerCase().includes(searchTerm.toLowerCase()));
+  const filteredStudents = students.filter(s => s.nome.toLowerCase().includes(searchTerm.toLowerCase()));
 
   return (
     <div>
@@ -101,16 +121,25 @@ export default function ManageUsers() {
           </button>
         </div>
 
-        <div style={{ marginBottom: '16px' }}>
-          <button className="btn-primary" style={{ padding: '8px 16px', width: 'auto' }} onClick={() => handleOpenModal()}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
+          <div style={{ flex: 1, maxWidth: '300px' }}>
+            <input 
+              type="text" 
+              placeholder="Pesquisar por nome..." 
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              style={{ width: '100%', padding: '8px 12px', border: '1px solid #e2e8f0', borderRadius: '4px' }}
+            />
+          </div>
+          <button className="btn-primary" style={{ padding: '8px 16px', width: 'auto', margin: 0 }} onClick={() => handleOpenModal()}>
             <Plus size={18} style={{ verticalAlign: 'middle', marginRight: '8px' }} />
-            Adicionar {activeTab === 'STAFF' ? 'Staff' : 'Aluno'}
+            Adicionar {activeTab === 'STAFF' ? 'Funcionário' : 'Aluno'}
           </button>
         </div>
 
         <DataGrid 
           columns={activeTab === 'STAFF' ? staffColumns : studentColumns} 
-          data={activeTab === 'STAFF' ? users : students} 
+          data={activeTab === 'STAFF' ? filteredUsers : filteredStudents} 
           renderActions={(row) => (
             <>
               <button className="action-btn edit" onClick={() => handleOpenModal(row)}><Edit2 size={16} /></button>
@@ -137,19 +166,29 @@ export default function ManageUsers() {
                 <label>Cargo</label>
                 <select 
                   style={{ width: '100%', padding: '12px', border: '1px solid #e2e8f0', borderRadius: '4px' }}
-                  value={currentUser?.role || 'TEACHER'} 
+                  value={currentUser?.role || 'Professor'} 
                   onChange={e => setCurrentUser({...currentUser, role: e.target.value})}
                 >
-                  <option value="TEACHER">Professor</option>
-                  <option value="ADMIN">Administrador</option>
+                  <option value="Professor">Professor</option>
+                  <option value="Administrador">Administrador</option>
                 </select>
               </div>
             </>
           ) : (
-            <div className="form-group">
-              <label>Matrícula</label>
-              <input required type="text" value={currentUser?.matricula || ''} onChange={e => setCurrentUser({...currentUser, matricula: e.target.value})} />
-            </div>
+            <>
+              <div className="form-group">
+                <label>Matrícula</label>
+                <input required type="text" value={currentUser?.matricula || ''} onChange={e => setCurrentUser({...currentUser, matricula: e.target.value})} />
+              </div>
+              <div className="form-group">
+                <label>Email (Opcional)</label>
+                <input type="email" value={currentUser?.email || ''} onChange={e => setCurrentUser({...currentUser, email: e.target.value})} />
+              </div>
+              <div className="form-group">
+                <label>Telefone do Responsável (Opcional)</label>
+                <input type="tel" value={currentUser?.telefone || ''} onChange={e => setCurrentUser({...currentUser, telefone: e.target.value})} />
+              </div>
+            </>
           )}
           
           <button type="submit" className="btn-primary">Salvar</button>
