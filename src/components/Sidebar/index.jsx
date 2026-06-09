@@ -9,8 +9,12 @@ import {
   LayoutDashboard,
   Settings,
   Link as LinkIcon,
-  FileText
+  FileText,
+  Calendar,
+  Database,
+  UploadCloud
 } from 'lucide-react';
+import ThemeToggle from '../ThemeToggle';
 import './styles.css';
 
 export default function Sidebar() {
@@ -28,6 +32,9 @@ export default function Sidebar() {
     { to: '/admin/users', icon: <GraduationCap size={20} />, label: 'Usuários' },
     { to: '/admin/subjects', icon: <BookOpen size={20} />, label: 'Disciplinas' },
     { to: '/admin/grades', icon: <FileText size={20} />, label: 'Análise de Notas' },
+    { to: '/admin/calendar', icon: <Calendar size={20} />, label: 'Calendário' },
+    { to: '/admin/import', icon: <UploadCloud size={20} />, label: 'Importar CSV' },
+    { to: '/admin/audit', icon: <Database size={20} />, label: 'Auditoria' },
   ];
 
   const teacherLinks = [
@@ -39,7 +46,10 @@ export default function Sidebar() {
   return (
     <aside className="sidebar">
       <div className="sidebar-header">
-        <h2>Gestor Escolar</h2>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+          <h2>Gestor Escolar</h2>
+          <ThemeToggle />
+        </div>
         <span className="role-badge">{user?.role === 'Administrador' ? 'Administrador' : 'Professor'}</span>
       </div>
 

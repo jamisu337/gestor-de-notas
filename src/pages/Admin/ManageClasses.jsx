@@ -3,8 +3,9 @@ import Card from '../../components/Card';
 import DataGrid from '../../components/DataGrid';
 import Modal from '../../components/Modal';
 import { db } from '../../services/mockDb';
-import { Plus, Edit2, Trash2, Users } from 'lucide-react';
+import { Plus, Edit2, Trash2, Users, ClipboardList } from 'lucide-react';
 import ClassAllocations from '../../components/ClassAllocations';
+import AdminAttendanceReport from './AdminAttendanceReport';
 
 export default function ManageClasses() {
   const [classes, setClasses] = useState([]);
@@ -12,6 +13,7 @@ export default function ManageClasses() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentClass, setCurrentClass] = useState(null);
   const [selectedClassForAllocation, setSelectedClassForAllocation] = useState(null);
+  const [selectedClassForAttendance, setSelectedClassForAttendance] = useState(null);
 
   useEffect(() => {
     loadClasses();
@@ -64,6 +66,15 @@ export default function ManageClasses() {
     );
   }
 
+  if (selectedClassForAttendance) {
+    return (
+      <AdminAttendanceReport 
+        classId={selectedClassForAttendance} 
+        onBack={() => setSelectedClassForAttendance(null)} 
+      />
+    );
+  }
+
   return (
     <div>
       <Card 
@@ -92,6 +103,7 @@ export default function ManageClasses() {
           minWidth="600px"
           renderActions={(row) => (
             <>
+              <button className="action-btn" style={{ color: 'var(--text-light)' }} title="Relatório de Frequência" onClick={() => setSelectedClassForAttendance(row.id)}><ClipboardList size={16} /></button>
               <button className="action-btn manage" title="Gerenciar Alocações" onClick={() => setSelectedClassForAllocation(row.id)}><Users size={16} /></button>
               <button className="action-btn edit" title="Editar Turma" onClick={() => handleOpenModal(row)}><Edit2 size={16} /></button>
               <button className="action-btn delete" title="Excluir Turma" onClick={() => handleDelete(row.id)}><Trash2 size={16} /></button>

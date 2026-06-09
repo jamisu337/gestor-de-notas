@@ -1,6 +1,6 @@
 // Simulando um banco de dados local
 
-const VERSION = '_v4'; // Alterar para forçar reset do localStorage com novos dados padrão
+const VERSION = '_v5'; // Alterar para forçar reset do localStorage com novos dados padrão
 
 const loadData = (key, defaultData) => {
   const data = localStorage.getItem(`gestor_notas_${key}${VERSION}`);
@@ -78,6 +78,16 @@ const defaultClassStudents = [];
 const defaultGrades = [];
 const defaultGradeFormulas = []; // Nova tabela para Fórmulas de Notas
 
+const defaultAttendance = [];
+const defaultObservations = [];
+const defaultAcademicCalendar = [
+  { id: 'cal1', bimestre: 1, start_date: '2026-02-01', end_date: '2026-04-30', is_locked: false },
+  { id: 'cal2', bimestre: 2, start_date: '2026-05-01', end_date: '2026-07-15', is_locked: false },
+  { id: 'cal3', bimestre: 3, start_date: '2026-08-01', end_date: '2026-09-30', is_locked: false },
+  { id: 'cal4', bimestre: 4, start_date: '2026-10-01', end_date: '2026-12-15', is_locked: false },
+];
+const defaultAuditLogs = [];
+
 // Distribuindo alunos nas turmas (3 alunos por turma para dar 27)
 let studentIndex = 0;
 defaultClasses.forEach(c => {
@@ -112,6 +122,10 @@ export const db = {
   classStudents: loadData('classStudents', defaultClassStudents),
   grades: loadData('grades', defaultGrades),
   gradeFormulas: loadData('gradeFormulas', defaultGradeFormulas),
+  attendance: loadData('attendance', defaultAttendance),
+  observations: loadData('observations', defaultObservations),
+  academicCalendar: loadData('academicCalendar', defaultAcademicCalendar),
+  auditLogs: loadData('auditLogs', defaultAuditLogs),
   
   save(table) {
     saveData(table, this[table]);
@@ -129,7 +143,24 @@ export const api = {
     });
   },
   
-  updateGrade: async (student_id, class_subject_id, bimestre, field, value) => {
+  createAuditLog: async (user_id, action, details) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const log = {
+          id: 'log' + Date.now(),
+          user_id,
+          action,
+          details,
+          timestamp: new Date().toISOString()
+        };
+        db.auditLogs.unshift(log); // Adiciona no início
+        db.save('auditLogs');
+        resolve(log);
+      }, 100);
+    });
+  },
+
+  updateGrade: async (student_id, class_subject_id, bimestre, field, value, user_id) => {
     return new Promise((resolve) => {
       setTimeout(() => {
         let grade = db.grades.find(g => g.student_id === student_id && g.class_subject_id === class_subject_id && g.bimestre === bimestre);
@@ -146,6 +177,13 @@ export const api = {
           db.grades.push(grade);
         }
         db.save('grades');
+
+        if (user_id) {
+          const student = db.students.find(s => s.id === student_id);
+          const userName = db.users.find(u => u.id === user_id)?.nome || user_id;
+          api.createAuditLog(user_id, 'UPDATE_GRADE', `Nota (${field}: ${value}) de ${student?.nome || student_id} no ${bimestre}º Bimestre atualizada por ${userName}`);
+        }
+
         resolve(grade);
       }, 300);
     });
@@ -168,6 +206,117 @@ export const api = {
         db.save('gradeFormulas');
         resolve(formula);
       }, 300);
+    });
+  },
+
+  saveAttendance: async (student_id, class_subject_id, date, status) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        let record = db.attendance.find(a => a.student_id === student_id && a.class_subject_id === class_subject_id && a.date === date);
+        if (record) {
+          record.status = status;
+        } else {
+          record = {
+            id: 'att' + Date.now(),
+            student_id,
+            class_subject_id,
+            date,
+            status
+          };
+          db.attendance.push(record);
+        }
+        db.save('attendance');
+        resolve(record);
+      }, 300);
+    });
+  },
+
+  bulkSaveAttendance: async (records) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        records.forEach(({ student_id, class_subject_id, date, status }) => {
+          let record = db.attendance.find(a => a.student_id === student_id && a.class_subject_id === class_subject_id && a.date === date);
+          if (record) {
+            record.status = status;
+          } else {
+            record = {
+              id: 'att' + Date.now() + Math.random().toString(36).substr(2, 5),
+              student_id,
+              class_subject_id,
+              date,
+              status
+            };
+            db.attendance.push(record);
+          }
+        });
+        db.save('attendance');
+        resolve(true);
+      }, 500);
+    });
+  },
+
+  saveObservation: async (student_id, class_subject_id, bimestre, text) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        let obs = db.observations.find(o => o.student_id === student_id && o.class_subject_id === class_subject_id && o.bimestre === bimestre);
+        if (obs) {
+          obs.text = text;
+          obs.timestamp = new Date().toISOString();
+        } else {
+          obs = {
+            id: 'obs' + Date.now(),
+            student_id,
+            class_subject_id,
+            bimestre,
+            text,
+            timestamp: new Date().toISOString()
+          };
+          db.observations.push(obs);
+        }
+        db.save('observations');
+        resolve(obs);
+      }, 300);
+    });
+  },
+
+  updateCalendar: async (id, updates) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const cal = db.academicCalendar.find(c => c.id === id);
+        if (cal) {
+          Object.assign(cal, updates);
+          db.save('academicCalendar');
+        }
+        resolve(cal);
+      }, 300);
+    });
+  },
+
+  bulkImportUsers: async (usersData) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const newUsers = usersData.map((u, i) => ({
+          id: 'u_bulk_' + Date.now() + i,
+          ...u
+        }));
+        db.users = [...db.users, ...newUsers];
+        db.save('users');
+        resolve(newUsers);
+      }, 800);
+    });
+  },
+
+  bulkImportStudents: async (studentsData) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const newStudents = studentsData.map((s, i) => ({
+          id: 's_bulk_' + Date.now() + i,
+          ...s
+        }));
+        db.students = [...db.students, ...newStudents];
+        db.save('students');
+        resolve(newStudents);
+      }, 800);
     });
   }
 };

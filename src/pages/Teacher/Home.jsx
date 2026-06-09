@@ -58,7 +58,7 @@ export default function TeacherHome() {
                 style={{ width: '100%', marginTop: '16px' }}
                 onClick={() => navigate(`/teacher/grades/${item.id}`)}
               >
-                Lançar Notas
+                Entrar na Turma
               </button>
             </Card>
           ))}
