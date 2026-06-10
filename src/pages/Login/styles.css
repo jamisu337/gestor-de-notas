@@ -34,27 +34,34 @@
 
 .role-selector {
   display: flex;
-  background-color: #f1eff7;
+  gap: 8px;
+  background-color: transparent;
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
-  padding: 4px;
+  padding: 8px;
   margin-bottom: 30px;
 }
 
 .role-tab {
   flex: 1;
-  padding: 12px;
-  text-align: center;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   background: transparent;
   color: var(--color-text-light);
   font-weight: 500;
   border-radius: var(--radius-sm);
+  border: 1px solid transparent;
   transition: all var(--transition-normal);
 }
 
 .role-tab.active {
-  background-color: var(--color-surface);
-  color: var(--color-primary);
+  background-color: var(--color-primary);
+  color: white;
   box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-primary);
 }
 
 .form-group {
@@ -69,38 +76,115 @@
   font-size: 14px;
 }
 
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 14px;
+  color: var(--color-text-light);
+}
+
 .form-group input {
   width: 100%;
-  padding: 12px 16px;
-  border: 1px solid #e2e8f0;
+  padding: 12px 16px 12px 42px;
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-primary);
   border-radius: var(--radius-md);
   font-size: 16px;
-  transition: border-color var(--transition-fast);
+  transition: all var(--transition-fast);
 }
 
 .form-group input:focus {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(94, 75, 138, 0.1);
+  outline: 1px solid var(--color-primary);
 }
 
-.btn-primary {
+/* Chrome autofill hack para remover fundo branco chumbado pelo navegador */
+.form-group input:-webkit-autofill,
+.form-group input:-webkit-autofill:hover, 
+.form-group input:-webkit-autofill:focus, 
+.form-group input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px var(--color-surface) inset !important;
+  -webkit-text-fill-color: var(--color-text) !important;
+  border: 1px solid var(--color-primary) !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.btn-eye {
+  position: absolute;
+  right: 14px;
+  background: none;
+  border: none;
+  color: var(--color-text-light);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.btn-eye:hover {
+  color: var(--color-primary);
+}
+
+.login-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  font-size: 14px;
+}
+
+.remember-me {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-text-light);
+  cursor: pointer;
+}
+
+.remember-me input[type="checkbox"] {
+  accent-color: var(--color-primary);
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.forgot-password {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+}
+
+.btn-login {
   width: 100%;
   padding: 14px;
-  background-color: var(--color-primary);
+  background: linear-gradient(to right, var(--color-primary), #8B5CF6);
   color: white;
   font-weight: 600;
   font-size: 16px;
+  border: none;
   border-radius: var(--radius-md);
-  transition: background-color var(--transition-fast), transform var(--transition-fast);
+  cursor: pointer;
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
   margin-top: 10px;
 }
 
-.btn-primary:hover {
-  background-color: var(--color-primary-dark);
+.btn-login:hover {
+  opacity: 0.9;
   transform: translateY(-1px);
 }
 
-.btn-primary:active {
+.btn-login:active {
   transform: translateY(1px);
 }
 

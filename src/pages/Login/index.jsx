@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import { User, ShieldCheck, Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import './styles.css';
 
 export default function Login() {
   const [role, setRole] = useState('Professor'); // Professor ou Administrador
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -42,6 +44,7 @@ export default function Login() {
             className={`role-tab ${role === 'Professor' ? 'active' : ''}`}
             onClick={() => setRole('Professor')}
           >
+            <User size={18} />
             Sou Professor
           </button>
           <button 
@@ -49,6 +52,7 @@ export default function Login() {
             className={`role-tab ${role === 'Administrador' ? 'active' : ''}`}
             onClick={() => setRole('Administrador')}
           >
+            <ShieldCheck size={18} />
             Sou Administrador
           </button>
         </div>
@@ -58,26 +62,47 @@ export default function Login() {
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Email</label>
-            <input 
-              type="email" 
-              placeholder={role === 'Administrador' ? 'admin@escola.com' : 'professor@escola.com'}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+            <div className="input-wrapper">
+              <Mail size={18} className="input-icon" />
+              <input 
+                type="email" 
+                placeholder={role === 'Administrador' ? 'admin@escola.com' : 'professor@escola.com'}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
           </div>
           
           <div className="form-group">
             <label>Senha</label>
-            <input 
-              type="password" 
-              placeholder="Sua senha (123)"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            <div className="input-wrapper">
+              <Lock size={18} className="input-icon" />
+              <input 
+                type={showPassword ? "text" : "password"}
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <button 
+                type="button" 
+                className="btn-eye"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
           </div>
 
-          <button type="submit" className="btn-primary">
-            Entrar no Sistema
+          <div className="login-options">
+            <label className="remember-me">
+              <input type="checkbox" />
+              <span>Lembrar de mim</span>
+            </label>
+            <a href="#" className="forgot-password">Esqueci minha senha</a>
+          </div>
+
+          <button type="submit" className="btn-login">
+            Entrar na Plataforma
           </button>
         </form>
       </div>

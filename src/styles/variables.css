@@ -1,19 +1,20 @@
 :root {
   /* Colors */
-  --color-primary: #5E4B8A;
-  --color-primary-dark: #483D8B;
-  --color-primary-light: #9d8fd1;
-  --color-accent: #ffb6c1; /* rosa claro */
-  --color-accent-dark: #ff8ca3;
-  --color-background: #F8F8FF; /* lavanda claro */
+  --color-primary: #2563EB;
+  --color-primary-dark: #1D4ED8;
+  --color-primary-light: #60A5FA;
+  --color-accent: #06B6D4;
+  --color-accent-dark: #0891B2;
+  --color-background: #F8FAFC;
   --color-surface: #FFFFFF;
-  --color-text: #333333;
-  --color-text-light: #777777;
+  --color-text: #0F172A;
+  --color-text-light: #64748B;
   --color-text-inverse: #FFFFFF;
   
-  --color-danger: #e74c3c;
-  --color-success: #2ecc71;
-  --color-warning: #f1c40f;
+  --color-danger: #EF4444;
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --border-color: #E2E8F0;
 
   /* Typography */
   --font-family: 'Inter', system-ui, -apple-system, sans-serif;
@@ -33,4 +34,23 @@
   /* Transitions */
   --transition-fast: 0.15s ease-in-out;
   --transition-normal: 0.3s ease-in-out;
+}
+
+[data-theme='dark'] {
+  --color-primary: #3B82F6;
+  --color-primary-dark: #2563EB;
+  --color-primary-light: #60A5FA;
+  --color-accent: #00E5FF;
+  --color-accent-dark: #00B8D4;
+  --color-background: #071022;
+  --color-surface: #111A31;
+  --color-text: #F1F5F9;
+  --color-text-light: #94A3B8;
+  --color-text-inverse: #071022;
+  
+  --color-danger: #F87171;
+  --color-success: #34D399;
+  --color-warning: #FBBF24;
+
+  --border-color: #1E293B;
 }

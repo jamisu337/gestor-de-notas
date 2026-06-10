@@ -82,7 +82,7 @@ export default function AcademicCalendar() {
 
   return (
     <div>
-      <h1 style={{ marginBottom: '24px' }}>Calendário Acadêmico</h1>
+      <h1 style={{ marginBottom: '24px', color: 'var(--color-primary-dark)' }}>Calendário Acadêmico</h1>
       <Card title="Controle de Prazos (Bloqueio de Notas)">
         <DataGrid data={calendar} columns={columns} />
         {loading && <Loader fullScreen />}

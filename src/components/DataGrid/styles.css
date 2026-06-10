@@ -1,7 +1,7 @@
 .datagrid-container {
   overflow-x: auto;
   border-radius: var(--radius-md);
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--border-color);
 }
 
 .datagrid-table {
@@ -11,7 +11,7 @@
 }
 
 .datagrid-table th {
-  background-color: #f8fafc;
+  background-color: var(--color-background);
   color: var(--color-text-light);
   font-weight: 600;
   font-size: 13px;
@@ -19,14 +19,15 @@
   letter-spacing: 0.5px;
   padding: 16px;
   text-align: left;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .datagrid-table td {
   padding: 16px;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid var(--border-color);
   color: var(--color-text);
   font-size: 14px;
+  transition: all var(--transition-fast);
 }
 
 .datagrid-table tbody tr {
@@ -34,7 +35,11 @@
 }
 
 .datagrid-table tbody tr:hover {
-  background-color: #f8fafc;
+  background-color: var(--color-background);
+}
+
+.datagrid-table tbody tr:hover td {
+  color: var(--color-primary);
 }
 
 .datagrid-empty {
