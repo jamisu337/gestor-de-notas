@@ -98,7 +98,9 @@ export default function ManageUsers() {
   ];
 
   const filteredUsers = users.filter(u => u.nome.toLowerCase().includes(searchTerm.toLowerCase()));
-  const filteredStudents = students.filter(s => s.nome.toLowerCase().includes(searchTerm.toLowerCase()));
+  const filteredStudents = searchTerm.trim() === '' 
+    ? [] 
+    : students.filter(s => s.nome.toLowerCase().includes(searchTerm.toLowerCase()));
 
   return (
     <div>
@@ -137,17 +139,23 @@ export default function ManageUsers() {
           </button>
         </div>
 
-        <DataGrid 
-          columns={activeTab === 'STAFF' ? staffColumns : studentColumns} 
-          data={activeTab === 'STAFF' ? filteredUsers : filteredStudents} 
-          minWidth="600px"
-          renderActions={(row) => (
-            <>
-              <button className="action-btn edit" onClick={() => handleOpenModal(row)}><Edit2 size={16} /></button>
-              <button className="action-btn delete" onClick={() => handleDelete(row.id)}><Trash2 size={16} /></button>
-            </>
-          )}
-        />
+        {activeTab === 'STUDENTS' && searchTerm.trim() === '' ? (
+          <div style={{ padding: '40px', textAlign: 'center', color: 'var(--color-text-light)' }}>
+            Pesquise pelo nome para visualizar o aluno correspondente...
+          </div>
+        ) : (
+          <DataGrid 
+            columns={activeTab === 'STAFF' ? staffColumns : studentColumns} 
+            data={activeTab === 'STAFF' ? filteredUsers : filteredStudents} 
+            minWidth="600px"
+            renderActions={(row) => (
+              <>
+                <button className="action-btn edit" onClick={() => handleOpenModal(row)}><Edit2 size={16} /></button>
+                <button className="action-btn delete" onClick={() => handleDelete(row.id)}><Trash2 size={16} /></button>
+              </>
+            )}
+          />
+        )}
       </Card>
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title={currentUser?.id ? 'Editar' : 'Adicionar'}>

@@ -43,17 +43,23 @@ export default function AcademicCalendar() {
     { field: 'start_date', header: 'Data de Início', render: (row) => (
       <input 
         type="date" 
+        className="date-input-interactive"
         value={row.start_date}
+        onClick={(e) => {
+          if (e.target.showPicker) e.target.showPicker();
+        }}
         onChange={(e) => handleDateChange(row.id, 'start_date', e.target.value)}
-        style={{ padding: '6px', borderRadius: '4px', border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)' }}
       />
     )},
     { field: 'end_date', header: 'Data de Término', render: (row) => (
       <input 
         type="date" 
+        className="date-input-interactive"
         value={row.end_date}
+        onClick={(e) => {
+          if (e.target.showPicker) e.target.showPicker();
+        }}
         onChange={(e) => handleDateChange(row.id, 'end_date', e.target.value)}
-        style={{ padding: '6px', borderRadius: '4px', border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)' }}
       />
     )},
     { field: 'is_locked', header: 'Status', render: (row) => {
