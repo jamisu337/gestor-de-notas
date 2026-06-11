@@ -21,10 +21,23 @@
   margin-bottom: 30px;
 }
 
-.login-header h1 {
-  color: var(--color-primary-dark);
-  font-size: 24px;
-  margin-bottom: 8px;
+.login-logo {
+  max-width: 280px;
+  width: 100%;
+  height: auto;
+  margin-bottom: 16px;
+}
+
+.dark-logo {
+  display: none;
+}
+
+[data-theme='dark'] .light-logo {
+  display: none;
+}
+
+[data-theme='dark'] .dark-logo {
+  display: block;
 }
 
 .login-header p {

@@ -19,7 +19,10 @@ export default function Layout({ children }) {
           <button className="menu-btn" onClick={() => setSidebarOpen(true)}>
             <Menu size={24} />
           </button>
-          <h2>Gestor Escolar</h2>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <img src="/favicon.png" alt="Polari" style={{ width: '24px', height: '24px' }} />
+            <h2 style={{ margin: 0 }}>Polari</h2>
+          </div>
         </header>
         
         <div className="content-inner">

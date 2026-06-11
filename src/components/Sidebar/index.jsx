@@ -47,7 +47,10 @@ export default function Sidebar() {
     <aside className="sidebar">
       <div className="sidebar-header">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
-          <h2>Gestor Escolar</h2>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <img src="/favicon.png" alt="Polari" style={{ width: '28px', height: '28px' }} />
+            <h2 style={{ margin: 0 }}>Polari</h2>
+          </div>
           <ThemeToggle />
         </div>
         <span className="role-badge">{user?.role === 'Administrador' ? 'Administrador' : 'Professor'}</span>

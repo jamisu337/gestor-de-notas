@@ -34,8 +34,8 @@ export default function Login() {
     <div className="login-container">
       <div className="login-card">
         <div className="login-header">
-          <h1>Gestor Escolar</h1>
-          <p>Acesse sua conta para continuar</p>
+          <img src="/logo.png" alt="Polari" className="login-logo light-logo" />
+          <img src="/logo dark.png" alt="Polari" className="login-logo dark-logo" />
         </div>
 
         <div className="role-selector">
@@ -45,7 +45,7 @@ export default function Login() {
             onClick={() => setRole('Professor')}
           >
             <User size={18} />
-            Sou Professor
+            Professor
           </button>
           <button 
             type="button" 
@@ -53,7 +53,7 @@ export default function Login() {
             onClick={() => setRole('Administrador')}
           >
             <ShieldCheck size={18} />
-            Sou Administrador
+            Administrador
           </button>
         </div>
 
